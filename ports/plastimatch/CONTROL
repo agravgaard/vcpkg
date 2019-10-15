@@ -1,0 +1,9 @@
+Source: plastimatch
+Version: 1.8.0-0
+Build-Depends: itk[plm-compat], dlib, dcmtk, fftw3, sqlite3
+Homepage: https://gitlab.com/plastimatch/plastimatch
+Description: Toolkit for registration and more for radiotherapy
+
+Feature: cuda
+Build-Depends: cuda
+Description: CUDA support for plastimatch

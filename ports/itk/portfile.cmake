@@ -19,6 +19,24 @@ else()
     set(ITKVtkGlue OFF)
 endif()
 
+if ("rtk" IN_LIST FEATURES)
+    set(ModuleRTK ON)
+else()
+    set(ModuleRTK OFF)
+endif()
+
+if("rtk-cuda" IN_LIST FEATURES)
+    set(USE_CUDA ON)
+else()
+    set(USE_CUDA OFF)
+endif()
+
+if ("plm-compat" IN_LIST FEATURES)
+    set(PLM_COMPAT ON)
+else()
+    set(PLM_COMPAT OFF)
+endif()
+
 set(USE_64BITS_IDS OFF)
 if (VCPKG_TARGET_ARCHITECTURE STREQUAL x64 OR VCPKG_TARGET_ARCHITECTURE STREQUAL arm64)
     set(USE_64BITS_IDS ON)
@@ -37,6 +55,7 @@ vcpkg_configure_cmake(
         -DITK_INSTALL_PACKAGE_DIR=share/itk
         -DITK_USE_64BITS_IDS=${USE_64BITS_IDS}
         -DITK_USE_CONCEPT_CHECKING=ON
+        -DITK_BUILD_DEFAULT_MODULES=OFF
         #-DITK_USE_SYSTEM_LIBRARIES=ON # enables USE_SYSTEM for all third party libraries, some of which do not have vcpkg ports such as CastXML, SWIG, MINC etc
         -DITK_USE_SYSTEM_DOUBLECONVERSION=ON
         -DITK_USE_SYSTEM_EXPAT=ON
@@ -45,6 +64,7 @@ vcpkg_configure_cmake(
         -DITK_USE_SYSTEM_TIFF=ON
         -DITK_USE_SYSTEM_ZLIB=ON
         -DITK_USE_SYSTEM_EIGEN=ON
+        -DITK_USE_SYSTEM_GDCM=ON
         # This should be turned on some day, however for now ITK does download specific versions so it shouldn't spontaneously break
         -DITK_FORBID_DOWNLOADS=OFF
 
@@ -57,10 +77,18 @@ vcpkg_configure_cmake(
         -DITK_USE_SYSTEM_HDF5=ON # HDF5 was problematic in the past
         -DModule_ITKVtkGlue=${ITKVtkGlue} # optional feature
 
-        -DModule_IOSTL=ON # example how to turn on a non-default module
-        -DModule_MorphologicalContourInterpolation=ON # example how to turn on a remote module
-        -DModule_RLEImage=ON # example how to turn on a remote module
-        -DGDCM_USE_SYSTEM_OPENJPEG=ON #Use port openjpeg instead of own third-party
+        -DModule_RTK=${ModuleRTK}
+        -DREMOTE_GIT_TAG_RTK=master # v2.0.1 has compile errors
+        -DRTK_BUILD_APPLICATIONS=OFF # vcpkg is only for libraries, I think?
+        -DITK_USE_SYSTEM_FFTW=${ModuleRTK}
+        -DITK_USE_FFTWD=${ModuleRTK}
+        -DITK_USE_FFTWF=${ModuleRTK}
+        -DRTK_USE_CUDA=${USE_CUDA}
+        -DModule_ITKCudaCommon=${USE_CUDA}
+
+        -DModule_ITKDeprecated=${PLM_COMPAT}
+        -DModule_ITKReview=${PLM_COMPAT}
+
         ${ADDITIONAL_OPTIONS}
 )
 

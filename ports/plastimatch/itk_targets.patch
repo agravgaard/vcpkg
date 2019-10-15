@@ -1,0 +1,56 @@
+diff --git a/src/plastimatch/CMakeLists.txt b/src/plastimatch/CMakeLists.txt
+index c2f0032d..eb72a775 100644
+--- a/src/plastimatch/CMakeLists.txt
++++ b/src/plastimatch/CMakeLists.txt
+@@ -108,6 +108,11 @@ if (PLM_USING_SUPERBUILD)
+     PATHS "/usr/lib64/cmake/InsightToolkit")
+   include (HandleITK)
+   include (HandleVXL)
++else()
++  set(ITK_TARGETS
++      ITKCommon
++      ITKReview
++      )
+ endif ()
+ 
+ ##-----------------------------------------------------------------------------
+@@ -128,10 +133,10 @@ set (PLASTIMATCH_LIBS
+   plmutil
+   plmbase
+   plmsys
+-  ${ITK_LIBRARIES}
+   devillard
+   nkidecompress
+ #  lua
++  ${ITK_TARGETS}
+   ${MATH_LIB}
+   )
+ 
+diff --git a/src/plastimatch/base/CMakeLists.txt b/src/plastimatch/base/CMakeLists.txt
+index 0936e898..e1e45b00 100755
+--- a/src/plastimatch/base/CMakeLists.txt
++++ b/src/plastimatch/base/CMakeLists.txt
+@@ -203,9 +203,9 @@ endforeach ()
+ ##  LIBRARY DEPENDENCIES
+ ##-----------------------------------------------------------------------------
+ set (PLMBASE_LIBRARY_DEPENDENCIES
+-  ${ITK_LIBRARIES}
+   nkidecompress
+   plmsys
++  ${ITK_TARGETS}
+   )
+ if (DCMTK_FOUND)
+   set (PLMBASE_LIBRARY_DEPENDENCIES
+diff --git a/src/plastimatch/segment/CMakeLists.txt b/src/plastimatch/segment/CMakeLists.txt
+index 08bc8f67..5908b640 100644
+--- a/src/plastimatch/segment/CMakeLists.txt
++++ b/src/plastimatch/segment/CMakeLists.txt
+@@ -18,7 +18,7 @@ set (PLMSEGMENT_LIBRARY_DEPENDENCIES
+   plmutil
+   plmbase
+   plmsys
+-  ${ITK_LIBRARIES}
++  ${ITK_TARGETS}
+   )
+ 
+ set (PLMSEGMENT_LIBRARY_SRC

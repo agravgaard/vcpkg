@@ -1,0 +1,13 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index aa00d3af..517ea46c 100755
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -329,7 +329,7 @@ endif ()
+ ##  Search for libraries
+ ##-----------------------------------------------------------------------------
+ find_package (Etags)
+-find_package (FFTW)
++find_package (FFTW3)
+ find_package (Git)
+ find_package (Kaze)
+ find_package (Liblbfgs)
